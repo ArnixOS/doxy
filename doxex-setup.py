@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from colorama import Back , Fore
-from os import system , chdir , mkdir
+from os import system , chdir
 from os.path import isfile
 from socket import gethostname
 from shutil import move
@@ -63,7 +63,7 @@ if p != 0 :
     exit(1)
 else:
     chdir("doxy")
-    mkdir("~/.local/doxex")
+    system("mkdir ~/.local/doxex")
     move("doxex.py" , "~/.local/share/doxex")
     chdir("~/.local/share/doxex")
     system("ln -sf doxex.py ../bin/doxex")
