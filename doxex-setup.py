@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from colorama import Back , Fore
 from os import system 
 from socket import gethostname
