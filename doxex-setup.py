@@ -64,6 +64,6 @@ if p != 0 :
 else:
     chdir("doxy")
     system("mkdir ~/.local/doxex")
-    move("doxex.py" , "~/.local/share/doxex")
+    move("doxex.py" , "~/.local/doxex")
     chdir("~/.local/share/doxex")
     system("ln -sf doxex.py ../bin/doxex")
