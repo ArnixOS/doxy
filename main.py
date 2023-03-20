@@ -1,7 +1,9 @@
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
+from rich.table import Table
 from os import system
+import container_list
 
 heading1 = Panel('''
 [red]██████[/red]   [yellow]██████[/yellow]   [green]██  ██[/green]   [blue]██  ██[/blue]
@@ -29,10 +31,20 @@ heading2 = '''
 [[red bold]x[/red bold]] exit doxy
 '''
 
+distab = Table()
+distab.add_column("s.no")
+distab.add_column("distro")
+distab.add_row("i","[blue]Alpine Linux[/blue]")
+distab.add_row("ii","[cyan]Arch Linux[/cyan]" )
+distab.add_row("iii" , "[red]Debian Linux[/red]")
+distab.add_row("iv", "[blue]Fedora Linux[/blue]")
+distab.add_row("v","[green]OpenSuse Linux[/green]" )
+distab.add_row("vi","[red]Ubuntu Linux[/red]" )
+
 def enter():
     console.print("Showing all the containers you have:-")
     system("distrobox list")
-    container = Prompt.ask("Enter the container you want to start:-")
+    container = Prompt.ask("Enter the container you want to enter:-")
     console.print(f"[yellow bold]NOTE:-[/yellow bold] In order to exit [blue]{container}[/blue] type [red bold]exit[/red bold]")
     console.print(f"Staring [blue]{container}[/blue]...")
     p1 = system(f"distrobox enter {container}")
@@ -61,8 +73,28 @@ def remove():
     else:
         console.print(f"[red]error:-[/red] container [blue]{container}[/blue] not deleted")
 
-#ef stop():
+def list_containers():
+    console.print("doxy can make containers of the following distros:-")
+    console.print(distab)
+    prompt = Prompt.ask("Enter the distro's serial number in order to make the container", choices=["i" , "ii" , "iii" , "iv" , "v" , "vi"])
     
+
+#def create(id: str , hostname: str):
+
+
+def view():
+    console.print("here is the list of all of your distrobox containers:-")
+    system("distrobox list")
+
+
+def stop():
+    view()
+    cont = Prompt.ask("[green]>[/green] enter the container you want to stop")
+    prcs = system(f"distrobox stop {cont}")
+    if prcs != 0:
+        console.print(f"[red]error:-[/red] [blue]{cont}[/blue] failed to stop")
+    else:
+        pass 
 
 console = Console()
 console.print(heading1)
@@ -75,3 +107,9 @@ elif choice == str("r"):
     remove()
 elif choice == str("e"):
     enter()
+elif choice == str("v"):
+    view()
+elif choice == str("s"):
+    stop()
+elif choice == str("c"):
+    list_containers()
