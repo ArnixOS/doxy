@@ -31,7 +31,7 @@ heading2 = '''
 [[red bold]x[/red bold]] exit doxy
 '''
 
-distab = Table()
+distab = Table(title="Supported Linux Distros:-")
 distab.add_column("s.no")
 distab.add_column("distro")
 distab.add_row("i","[blue]Alpine Linux[/blue]")
@@ -73,19 +73,95 @@ def remove():
     else:
         console.print(f"[red]error:-[/red] container [blue]{container}[/blue] not deleted")
 
+class ShowDistroContainers():
+    def alpine():
+        tabubu = Table(title="Supported Alpine Versions")
+        tabubu.add_column("s.no:-")
+        tabubu.add_column("versions:-")
+        tabubu.add_row("i" , "[blue]3.15[/blue]")
+        tabubu.add_row("ii" , "[blue]3.16[/blue]")
+        tabubu.add_row("iii" , "[blue]latest[/blue]")
+        console.print(Panel("These alpine versions are supported:-" and tabubu))
+
+    def fedora():
+        tabubu = Table(title="Supported Fedora Versions")
+        tabubu.add_column("s.no:-")
+        tabubu.add_column("versions:-")
+        tabubu.add_row("i" , "[blue]36[/blue]")
+        tabubu.add_row("ii" , "[blue]37[/blue]")
+        tabubu.add_row("iii" , "[blue]38 Rawhide[/blue]")
+        console.print(Panel(tabubu))
+
+    def arch():
+        tabar = Table(title="Supported Arch Versions")
+        tabar.add_column("s.no:-")
+        tabar.add_column("version:-")
+        tabar.add_row("i" , "[cyan]latest[/cyan]")
+        console.print(Panel(tabar))
+        option = Prompt.ask("select version" , choices=["i"])
+        if option == "i":
+            create("archlinux:latest")
+
+    def osuse():
+        tabos = Table(title="Supported OpenSuse Versions")
+        tabos.add_column("s.no:-")
+        tabos.add_column("version:-")
+        tabos.add_row("i" , "[green]leap(stable)[/green]")
+        tabos.add_row("ii" , "[green]tumbleweed(rolling)[/green]")
+        console.print(Panel(tabos))
+
+    def ubuntu():
+        tabubu = Table(title="Supported Ubuntu Versions")
+        tabubu.add_column("s.no:-")
+        tabubu.add_column("versions:-")
+        tabubu.add_row("i" , "[red]14.04 trusty[/red]")
+        tabubu.add_row("ii" , "[red]16.04 xenial[/red]")
+        tabubu.add_row("iii" , "[red]18.04 bionic[/red]")
+        tabubu.add_row("iv" , "[red]20.04 focal[/red]")
+        tabubu.add_row("v" , "[red]22.04 jammy[/red]")
+        console.print(Panel("These ubuntu versions are supported:-" and tabubu))
+
+
+    def debian():
+        tabubu = Table(title="Supported Debian Versions")
+        tabubu.add_column("s.no:-")
+        tabubu.add_column("versions:-")
+        tabubu.add_row("i" , "[red]9 Stretch[/red]")
+        tabubu.add_row("ii" , "[red]10 Buster[/red]")
+        tabubu.add_row("iii" , "[red]11 Bullseye[/red]")
+        tabubu.add_row("iv" , "[red]12 Bookworm(Testing)[/red]")
+        tabubu.add_row("v" , "[red]Sid(rolling)[/red]")
+        console.print(Panel(tabubu))
+
+        
 def list_containers():
-    console.print("doxy can make containers of the following distros:-")
-    console.print(distab)
+    console.print(Panel(distab))
     prompt = Prompt.ask("Enter the distro's serial number in order to make the container", choices=["i" , "ii" , "iii" , "iv" , "v" , "vi"])
-    
+    if prompt == "vi":
+        ShowDistroContainers.ubuntu()
+    elif prompt == "i":
+        ShowDistroContainers.alpine()
+    elif prompt == "ii":
+        ShowDistroContainers.arch()
+    elif prompt == "iii":
+        ShowDistroContainers.debian()
+    elif prompt == "iv":
+        ShowDistroContainers.fedora()
+    elif prompt == "v":
+        ShowDistroContainers.osuse()
 
-#def create(id: str , hostname: str):
-
+def create(id: str):
+    hname = Prompt.ask("[green]>[/green] Enter the name of your container?") 
+    console.print("creating your container...")
+    prcs = system(f"distrobox-create --name doxybox-{hname} --image {id}")
+    if prcs != 0:
+        console.print("[red]error:-[/red] creating container failed")
+    else:
+        pass
 
 def view():
     console.print("here is the list of all of your distrobox containers:-")
     system("distrobox list")
-
 
 def stop():
     view()
